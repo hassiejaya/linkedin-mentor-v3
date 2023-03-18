@@ -60,7 +60,23 @@ app.get('/api/proxy', (req, res) => {
     });
   });
   
-
+  app.post('/api/proxy/auth',(req,res)=>{
+    const{url,data, headers} = req.body;
+  
+    axios({
+      method: 'post',
+      url: url,
+      data: data,
+      headers: headers,
+    }).then(response=>{
+      res.send(response.data);
+      console.log('auth response sent');
+    }).catch(error=>{
+      console.log(error, "auth from proxy(server.js)!!");
+      // console.data;
+      //res.status(500).send('An error occurred');
+    });
+  });
 
 
 

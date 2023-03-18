@@ -16,7 +16,7 @@ const AuthCalback = () => {
         window.$statee = queryParameters.get("state"); 
 
         if(thedata !== ''){
-            axios.post('https://localhost:4000/api/proxy', {
+            axios.post('http://localhost:5000/api/proxy/auth', {
                 url: 'https://www.linkedin.com/oauth/v2/accessToken',
                 data: `code=${thedata}&grant_type=authorization_code&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}`,
                 headers: {
