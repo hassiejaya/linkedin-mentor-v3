@@ -52,6 +52,7 @@ function App() {
      
      {/* <Navbar/> */}
      <h1> The LinkedIn Mentor</h1>
+     <hr/>
      <div className="content">
      <BrowserRouter>
       <Routes>

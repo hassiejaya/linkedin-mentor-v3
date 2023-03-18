@@ -107,12 +107,12 @@ function UploadMedia(props) {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="media">Choose media:</label>
+        <div className="field c" >
+          <label  htmlFor="media">Choose Media </label>
           <input type="file" id="media" onChange={handleFileChange} />
         </div>
-        <div>
-          <label htmlFor="caption">Caption:</label>
+        <div className="field">
+          <label htmlFor="caption">Caption : </label>
           <input
             type="text"
             id="caption"

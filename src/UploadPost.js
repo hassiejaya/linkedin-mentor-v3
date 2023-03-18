@@ -116,24 +116,40 @@ const UploadPost = (props) => {
 
 
     return ( <div className="UploadPost">
+      <div className="textpost">
       <form>
         <label> Write a Text Post :</label>
         <textarea value={post_text} onChange={(e)=>setPost_text(e.target.value)} ></textarea>
       </form>
       {apiki&&<button onClick={()=>{post_Handler();}}> Upload Text Post</button>}
-        <form>
-          <label> Article Url</label>
+      </div>
+      
+      <div className="article">
+      <form>
+          <div className="field">
+          <label> Article Url : </label>
           <input type="text" value={article_url} onChange={(e)=>setArticle_url(e.target.value)}/>
-          <label> Article Title</label>
+          </div>
+          <div className="field">
+          <label> Article Title : </label>
           <input type="text" value={article_title} onChange={(e)=>setArticle_title(e.target.value)}/>
-          <label> Post text</label>
+          </div>
+          <div className="field"><label> Post text : </label>
           <textarea value={article_text} onChange={(e)=>setArticle_text(e.target.value)} > write something about this post</textarea>
-          <label> Article Description</label>
+          </div>
+          <div className="field">
+          <label> Article Description : </label>
           <textarea value={article_description} onChange={(e)=>setArticle_description(e.target.value)} > write something about this post</textarea>
-          
+          </div>
+        
         </form>
         {apiki&&<button onClick={()=>{article_Handler(article_url,article_title,article_description,article_text)}}> Upload Article</button>}
-        <UploadMedia ACCESS_TOKEN = {apiki.access_token} USER_ID={member_id }   />
+      </div>
+      <div className="mediapost">
+      <UploadMedia ACCESS_TOKEN = {apiki.access_token} USER_ID={member_id }   />
+      </div>
+        
+        
     </div> );
 }
  
