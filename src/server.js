@@ -56,7 +56,7 @@ app.get('/api/proxy', (req, res) => {
     }).catch(error=>{
       console.log(error, "from proxy!!");
       // console.data;
-      //res.status(500).send('An error occurred');
+      res.status(500).send('An error occurred');
     });
   });
   
@@ -74,7 +74,7 @@ app.get('/api/proxy', (req, res) => {
     }).catch(error=>{
       console.log(error, "auth from proxy(server.js)!!");
       // console.data;
-      //res.status(500).send('An error occurred');
+      res.status(500).send('An error occurred');
     });
   });
 

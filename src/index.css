@@ -119,9 +119,9 @@ img{
   width: 150px;
   text-align: center;
 }
-input[type="file"] {
+/* input[type="file"] {
   display: none;
-}
+} */
 .field.c label{
   border: 1px solid #ccc;
   border-radius: 30px;
