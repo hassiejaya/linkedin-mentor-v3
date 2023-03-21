@@ -119,14 +119,13 @@ img{
   width: 150px;
   text-align: center;
 }
-/* input[type="file"] {
+input[type="file"] {
   display: none;
-} */
+}
 .field.c label{
   border: 1px solid #ccc;
   border-radius: 30px;
     display: inline-block;
     padding: 6px 6px;
-    margin-bottom: 5px;
     cursor: pointer;
 }
