@@ -62,8 +62,10 @@ function App() {
         <Route exact path = "/home" element={<Home/>}/>
         <Route exact path = "/callback" element={<AuthCalback  />}/>
         <Route exact path = "/upload" element={<Home/>}/>
+       
       </Routes>
     </BrowserRouter>
+  
     </div> 
     </div>
    

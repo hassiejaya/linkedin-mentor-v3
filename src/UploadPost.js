@@ -1,6 +1,7 @@
 import axios from 'axios';
 import UploadMedia from './UploadMedia';
 import { useEffect, useState } from 'react';
+import { detectInfo } from './Detect';
 
 
 const UploadPost = (props) => {
@@ -11,6 +12,8 @@ const UploadPost = (props) => {
     const [article_description, setArticle_description] = useState('');
     const [article_title, setArticle_title] = useState('');
     const [article_url, setArticle_url] = useState('');
+    const [textmessage, setTextMessage] = useState("test text message");
+    const [articleMessage, setArticleMessage] = useState("test article message");
 
 
     const post_Handler = ()=>{
@@ -28,6 +31,11 @@ const UploadPost = (props) => {
         setArticle_description('');
       }
     }
+    useEffect(()=>{
+      setArticleMessage( detectInfo(article_text+article_description+article_title));
+      setTextMessage(detectInfo(post_text));
+
+    },[post_text,article_text,article_description,article_title])
 
     const apiki = JSON.parse(localStorage.getItem('authKey'));
     const UploadTextPost = (member_id,post_text)=>{
@@ -122,6 +130,9 @@ const UploadPost = (props) => {
         <textarea value={post_text} onChange={(e)=>setPost_text(e.target.value)} ></textarea>
       </form>
       {apiki&&<button onClick={()=>{post_Handler();}}> Upload Text Post</button>}
+      <div className="alert">
+            {textmessage&& <p style={{ margin: 0}}>{textmessage}</p>}
+        </div>
       </div>
       
       <div className="article">
@@ -132,7 +143,9 @@ const UploadPost = (props) => {
           </div>
           <div className="field">
           <label> Article Title : </label>
-          <input type="text" value={article_title} onChange={(e)=>setArticle_title(e.target.value)}/>
+          <input type="text" value={article_title} onChange={(e)=>{
+            setArticle_title(e.target.value);
+            }}/>
           </div>
           <div className="field"><label> Post text : </label>
           <textarea value={article_text} onChange={(e)=>setArticle_text(e.target.value)} > write something about this post</textarea>
@@ -144,6 +157,10 @@ const UploadPost = (props) => {
         
         </form>
         {apiki&&<button onClick={()=>{article_Handler(article_url,article_title,article_description,article_text)}}> Upload Article</button>}
+        <div className="alert">
+            {articleMessage && <p style={{ margin: 0}}>{articleMessage}</p>}
+        </div>
+      
       </div>
       <div className="mediapost">
       <UploadMedia ACCESS_TOKEN = {apiki.access_token} USER_ID={member_id }   />

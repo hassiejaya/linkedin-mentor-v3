@@ -45,6 +45,12 @@ button{
   background-color: rgb(0, 55, 55);
   color:rgb(255, 255, 255);
   font-size: 10;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  /* any other CSS properties you want to change for a disabled button */
 }
 
 a {

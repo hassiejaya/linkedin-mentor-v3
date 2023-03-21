@@ -129,3 +129,8 @@ input[type="file"] {
     padding: 6px 6px;
     cursor: pointer;
 }
+.alert{
+  color: red;
+  margin-bottom: 5px;
+  font-size: large;
+}

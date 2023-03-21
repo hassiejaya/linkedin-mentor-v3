@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import FormData from "form-data";
+import Tesseract from 'tesseract.js';
+import { detectInfo } from "./Detect.js";
 
 function UploadMedia(props) {
   const ACCESS_TOKEN =props.ACCESS_TOKEN;
@@ -12,6 +14,8 @@ function UploadMedia(props) {
   const [message, setMessage] = useState("");
   const [Asset, setAsset] = useState("");
   const [uploadUrl, setUploadUrl] = useState("");
+  const [ocrText, setOcrText] = useState('');
+  const [imageProcessed,setImageProcessed] = useState(true);
  
   const headers = {
     'Authorization': `Bearer ${ACCESS_TOKEN}`,
@@ -66,11 +70,24 @@ const data2 ={
       "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"
   }
 }
+useEffect(()=>{
+setMessage(detectInfo(caption+ocrText));
+setImageProcessed(true);
+},[ocrText,caption])
+
+
   const handleFileChange = (e) => {
+    setImageProcessed(false);
     setFile(e.target.files[0]);
     setFileType(e.target.files[0].type);
     setFilename(e.target.files[0].name);
-
+    recognizeText(e.target.files[0])
+    .then(text => {
+      console.log(text, "From Tesseract");
+      setOcrText(text);
+    })
+    .catch(error => console.error(error))
+    
     
   };
 
@@ -78,10 +95,15 @@ const data2 ={
     setCaption(e.target.value);
   };
 
+  async function recognizeText(imageFile) {
+    const { data: { text } } = await Tesseract.recognize(imageFile);
+    console.log(detectInfo(text))
+    return text;
+  }
  
 
   const handleSubmit= () => {
-   setMessage(`trying to upload ${fileType}, ${caption}`);
+   
    axios.post('http://localhost:5000/api/proxy/post', {
     url: 'https://api.linkedin.com/v2/assets?action=registerUpload',
     data: data1,
@@ -142,8 +164,11 @@ const data2 ={
         </div>
         
       </form>
-      <button onClick={()=>{handleSubmit()}} >Upload Media</button>
-      {message && <p style={{ margin: 0}}>{message}</p>}
+      <button disabled={!imageProcessed}  onClick={()=>{handleSubmit()}} >Upload Media</button>
+      <div className="alert">
+         {message && <p style={{ margin: 0}}>{message}</p>}
+      </div>
+      
      
     </div>
   );
