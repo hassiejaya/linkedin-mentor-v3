@@ -6,6 +6,7 @@ function UploadMedia(props) {
   const ACCESS_TOKEN =props.ACCESS_TOKEN;
   const  USER_ID = props.USER_ID;
   const [file, setFile] = useState(null);
+  const [filename, setFilename] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [caption, setCaption] = useState("");
   const [message, setMessage] = useState("");
@@ -51,11 +52,11 @@ const data2 ={
               {
                   "status": "READY",
                   "description": {
-                      "text": "Center stage!"
+                      "text": `${caption}`
                   },
                   "media": `${Asset}`,
                   "title": {
-                      "text": "LinkedIn Talent Connect 2021"
+                      "text": `${caption}`
                   }
               }
           ]
@@ -68,7 +69,9 @@ const data2 ={
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setFileType(e.target.files[0].type);
-   
+    setFilename(e.target.files[0].name);
+
+    
   };
 
   const handleCaptionChange = (e) => {
@@ -87,19 +90,13 @@ const data2 ={
     .then(response => {
         setAsset(response.data.value.asset);
         setUploadUrl(response.data.value.uploadMechanism['com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest'].uploadUrl);
-        console.log(Asset);
-        // console.log(USER_ID);
-        // console.log(uploadUrl);
-        const blob = new Blob([file], { type: fileType });
+        // console.log(Asset);
         let formData = new FormData();
         formData.append('file', file);
         formData.append('uploadUrl', uploadUrl)
         formData.append('auth', ACCESS_TOKEN)
-        // console.log(fileType);
-       console.log(formData.get('file'));
-
         fetch('http://localhost:5000/api/proxy/media', {method: "POST" ,body: formData}).then(response=>{
-            console.log(response)
+            // console.log(response)
             console.log(response.status,"UPLOAD STATUS");
            
           if(response.statusText==='Created'){
@@ -109,8 +106,8 @@ const data2 ={
               headers: headers
               })
               .then(response => {
-                  console.log(response);
-                  setMessage(response.status);
+                  // console.log(response);
+                  // setMessage(response.status);
               })
               .catch(error => {
               console.log(error);
@@ -126,23 +123,6 @@ const data2 ={
     });
   };
 
-
-  const handleFinalize = ()=>{
-    const binaryFile2 = new Blob([file], { type: file.type });
-    axios.post('http://localhost:5000/api/proxy/post', {
-              url: uploadUrl,
-              data: binaryFile2,
-              headers: headers2
-              })
-              .then(response => {
-                  setMessage(response.status);
-              })
-              .catch(error => {
-              console.log(error);
-              });
-  }
-  
-
   return (
     <div>
       <form>
@@ -150,8 +130,9 @@ const data2 ={
           <label  htmlFor="media">Choose Media </label>
           <input type="file" id="media" onChange={handleFileChange} />
         </div>
+        {filename && <p> {filename} chosen </p>}
         <div className="field">
-          <label htmlFor="caption">Caption : </label>
+          <label htmlFor="caption" style={{ marginTop : 8}}>Caption : </label>
           <input
             type="text"
             id="caption"
@@ -162,8 +143,7 @@ const data2 ={
         
       </form>
       <button onClick={()=>{handleSubmit()}} >Upload Media</button>
-      <button onClick={()=>{handleFinalize()}} >Upload Finalize </button>
-      {message && <p>{message}</p>}
+      {message && <p style={{ margin: 0}}>{message}</p>}
      
     </div>
   );
